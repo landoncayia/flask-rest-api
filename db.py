@@ -70,6 +70,7 @@ def insert_pokemon(pokemon):
     inserted_pokemon = {}
     try:
         conn = connect_to_db()
+        # Cursor object is used to execute CRUD operations
         cur = conn.cursor()
         # SQL 'INSERT INTO' statement inserts new records into a database
         cur.execute("INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) \
