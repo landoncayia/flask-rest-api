@@ -61,4 +61,31 @@ def csv_to_db():
         print("CSV reading failed")
     finally:
         conn.close()
+
+def insert_pokemon(pokemon):
+    """ Implements the 'Create' in CRUD - inserts a Pokemon into the database
+    :param pokemon: the pokemon to be inserted
+    :return: the Pokemon that was inserted
+    """
+    inserted_pokemon = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        # SQL 'INSERT INTO' statement inserts new records into a database
+        cur.execute("INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) \
+                        VALUES (?, ?, ?, ?, ?, ?)", (pokemon['pokedex_number'], pokemon['name'], pokemon['type1'],
+                        pokemon['type2'], pokemon['generation'], pokemon['abilities']))
+        # Changes must be committed to the database
+        conn.commit()
+        inserted_pokemon = get_pokemon_by_id(cur.lastrowid)
+    except:
+        # If an error occurs, roll back and state which function the error occurred in
+        conn.rollback()
+        print("Error inserting new Pokemon into the database")
+    
+    finally:
+        # Always remember to close the connection when done
+        conn.close()
+    
+    return insert_pokemon
         
