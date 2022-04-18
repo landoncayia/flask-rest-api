@@ -30,3 +30,4 @@ This table describes our REST API "endpoints" - these are the URLs that will def
 
 ## Resources used
 * https://levelup.gitconnected.com/full-stack-web-app-with-python-react-and-bootstrap-backend-8592baa6e4eb
+* Pokemon dataset: https://www.kaggle.com/datasets/rounakbanik/pokemon
