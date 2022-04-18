@@ -31,3 +31,33 @@ def create_db_table():
         print("Pokemon table creation failed")
     finally:
         conn.close()
+
+def csv_to_db():
+    """ Read the data from the .csv file into the database
+    """
+    try:
+        conn = connect_to_db()
+        try:
+            with open('pokemon.csv') as pkm_csv:
+                # Create csv reader object
+                reader = csv.reader(pkm_csv)
+
+                # Extract field row at top of csv file
+                fields = next(reader)
+
+                # Read the data from the csv file, row by row, insert into the database
+                for row in reader:
+                    sql = '''INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) 
+                            VALUES (?, ?, ?, ?, ?, ?);
+                    '''
+                    val = (int(row[32]), row[30], row[36], row[37], int(row[39]), row[0])
+                    cur = conn.cursor()
+                    cur.execute(sql, val)
+        except:
+            conn.rollback()
+            print("Error reading csv data into database, rolling back")
+    except:
+        print("CSV reading failed")
+    finally:
+        conn.close()
+        
