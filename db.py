@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sqlite3
+import csv
 
 def connect_to_db():
     """ Establish a connection to the database file.
