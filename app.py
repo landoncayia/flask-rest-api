@@ -3,10 +3,12 @@ from flask_cors import CORS
 import db
 
 app = Flask(__name__)
+# Allow access to endpoints from any IP address
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/api/pokemon', methods=['GET'])
 def api_get_all_pokemon():
+    # We use jsonify so that we are returning JSON objects rather than Python dictionaries
     return jsonify(db.get_all_pokemon())
 
 @app.route('/api/pokemon/<pokedex_no>', methods=['GET'])
