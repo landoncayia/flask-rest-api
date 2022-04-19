@@ -154,3 +154,30 @@ def get_pokemon_by_dex(pokedex_no):
         conn.close()
 
     return pokemon
+
+def update_pokemon(pokemon):
+    """ Implements the 'Update' in CRUD - updates a single Pokemon in the database
+    :param pokemon: the Pokemon to be updated (identified by Pokedex no.)
+    :return: the Pokemon that was updated
+    """
+    updated_pokemon = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        # SQL UPDATE statement along with WHERE to update a Pokemon with a certain Pokedex no. in the database
+        cur.execute("UPDATE pokemon SET name = ?, type1 = ?, type2 = ?, generation = ?, abilities = ?\
+                     WHERE pokedex_number = ?", pokemon['name'], pokemon['type1'], pokemon['type2'],
+                     pokemon['generation'], pokemon['abilities'], pokemon['pokedex_number'])
+        conn.commit()
+        # return the Pokemon
+        updated_pokemon = get_pokemon_by_dex(pokemon['pokedex_number'])
+    
+    except:
+        conn.rollback()
+        updated_pokemon = {}
+        print("Error updating the pokemon:", pokemon)
+    
+    finally:
+        conn.close()
+    
+    return updated_pokemon
