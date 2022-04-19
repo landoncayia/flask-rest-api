@@ -73,12 +73,13 @@ def insert_pokemon(pokemon):
         # Cursor object is used to execute CRUD operations
         cur = conn.cursor()
         # SQL 'INSERT INTO' statement inserts new records into a database
+        # See the README for an example of what the parameter 'pokemon' should be formatted as
         cur.execute("INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) \
                         VALUES (?, ?, ?, ?, ?, ?)", (pokemon['pokedex_number'], pokemon['name'], pokemon['type1'],
                         pokemon['type2'], pokemon['generation'], pokemon['abilities']))
         # Changes must be committed to the database
         conn.commit()
-        inserted_pokemon = get_pokemon_by_id(cur.lastrowid)
+        inserted_pokemon = get_pokemon_by_dex(cur.lastrowid)
     except:
         # If an error occurs, roll back and state which function the error occurred in
         conn.rollback()

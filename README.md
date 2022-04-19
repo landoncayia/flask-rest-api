@@ -28,6 +28,21 @@ This table describes our REST API "endpoints" - these are the URLs that will def
 | 4 | http://localhost:5000/api/pokemon/update              | PUT         | Update a Pokemon record                     |
 | 5 | http://localhost:5000/api/pokemon/delete/<pokedex_no> | DELETE      | Delete a Pokemon record                     |
 
+## Sample Pokemon object
+```json
+pokemon = {
+    "name": "Houndoom",
+    "type1": "dark",
+    "type2": "fire",
+    "generation": 2,
+    "abilities": [
+                    'Early Bird',
+                    'Flash Fire',
+                    'Unnerve'
+                 ]
+}
+```
+
 ## Resources used
 * https://levelup.gitconnected.com/full-stack-web-app-with-python-react-and-bootstrap-backend-8592baa6e4eb
 * Pokemon dataset: https://www.kaggle.com/datasets/rounakbanik/pokemon
