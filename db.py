@@ -90,3 +90,67 @@ def insert_pokemon(pokemon):
     
     return insert_pokemon
         
+def get_all_pokemon():
+    """ Partially implements the 'Retrieve' in CRUD - retrieves ALL Pokemon from the database
+    :return: all the Pokemon in the database
+    """
+    all_pokemon = []
+    try:
+        conn = connect_to_db()
+        # row_factory = Row makes it so that name-based access to columns are possible rather than just indexed like with tuples
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        # SQL SELECT statement to retrieve everything from the database
+        cur.execute("SELECT * FROM pokemon")
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            pokemon = {}
+            pokemon['pokedex_number'] = i['pokedex_number']
+            pokemon['name'] = i['name']
+            pokemon['type1'] = i['type1']
+            pokemon['type2'] = i['type2']
+            pokemon['generation'] = i['generation']
+            pokemon['abilities'] = i['abilities']
+            all_pokemon.append(pokemon)
+            
+    except:
+        pokemon = []
+        print("Error retrieving all Pokemon from the database")
+    
+    finally:
+        conn.close()
+    
+    return all_pokemon
+
+def get_pokemon_by_dex(pokedex_no):
+    """ Partially implements the 'Retrieve' in CRUD - retrieves a single Pokemon from the database by Pokedex no.
+    :param pokedex_no: the Pokedex no. of the Pokemon to be retrieved
+    :return: the specified Pokemon's database entry
+    """
+    pokemon = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        # SQL SELECT statement along with WHERE to retrieve a Pokemon with a certain Pokedex no. from the database
+        cur.execute("SELECT * FROM pokemon WHERE pokedex_number = ?", (pokedex_no,))
+        row = cur.fetchone()
+
+        # convert row object to dictionary
+        pokemon['pokedex_number'] = row['pokedex_number']
+        pokemon['name'] = row['name']
+        pokemon['type1'] = row['type1']
+        pokemon['type2'] = row['type2']
+        pokemon['generation'] = row['generation']
+        pokemon['abilities'] = row['abilities']
+    
+    except:
+        pokemon = {}
+        print("Error retrieving single Pokemon from the database with no:", pokedex_no)
+    
+    finally:
+        conn.close()
+
+    return pokemon
