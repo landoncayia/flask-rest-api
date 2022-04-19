@@ -28,8 +28,10 @@ def create_db_table():
 
         conn.commit()
         print("Pokemon table create successfully")
-    except:
+    except sqlite3.Error as e:
+        print("Error:", e)
         print("Pokemon table creation failed")
+        print()
     finally:
         conn.close()
 
@@ -60,6 +62,7 @@ def csv_to_db():
     except:
         print("CSV reading failed")
     finally:
+        conn.commit()
         conn.close()
 
 def insert_pokemon(pokemon):
