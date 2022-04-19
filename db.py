@@ -92,7 +92,7 @@ def insert_pokemon(pokemon):
         # Always remember to close the connection when done
         conn.close()
     
-    return insert_pokemon
+    return inserted_pokemon
         
 def get_all_pokemon():
     """ Partially implements the 'Retrieve' in CRUD - retrieves ALL Pokemon from the database
@@ -170,16 +170,17 @@ def update_pokemon(pokemon):
         cur = conn.cursor()
         # SQL UPDATE statement along with WHERE to update a Pokemon with a certain Pokedex no. in the database
         cur.execute("UPDATE pokemon SET name = ?, type1 = ?, type2 = ?, generation = ?, abilities = ?\
-                     WHERE pokedex_number = ?", pokemon['name'], pokemon['type1'], pokemon['type2'],
-                     pokemon['generation'], pokemon['abilities'], pokemon['pokedex_number'])
+                     WHERE pokedex_number = ?", (pokemon['name'], pokemon['type1'], pokemon['type2'],
+                     pokemon['generation'], pokemon['abilities'], pokemon['pokedex_number']))
         conn.commit()
         # return the Pokemon
         updated_pokemon = get_pokemon_by_dex(pokemon['pokedex_number'])
     
-    except:
+    except sqlite3.Error as e:
         conn.rollback()
         updated_pokemon = {}
-        print("Error updating the pokemon:", pokemon)
+        print("Error:", e)
+        print("There was an issue updating the pokemon:", pokemon)
     
     finally:
         conn.close()
