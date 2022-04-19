@@ -181,3 +181,24 @@ def update_pokemon(pokemon):
         conn.close()
     
     return updated_pokemon
+
+def delete_pokemon(pokedex_no):
+    """ Implements the 'Delete' in CRUD - deletes a single Pokemon in the database
+    :param pokedex_no: the Pokedex no. of the Pokemon to be delete
+    :return: a success/failure message
+    """
+    message = {}
+    try:
+        conn = connect_to_db()
+        # SQL DELETE statement along with WHERE to delete a Pokemon with a certain Pokedex no. from the database
+        conn.execute("DELETE from pokemon WHERE pokedex_number = ?", (pokedex_no,))
+        conn.commit()
+        message['status'] = "Pokemon deleted successfully"
+    except:
+        conn.rollback()
+        message['status'] = "Cannot delete Pokemon"
+    finally:
+        conn.close()
+    
+    return message
+
