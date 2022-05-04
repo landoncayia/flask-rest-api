@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+# from flask_cors import CORS
 import db
 
 db.create_db_table()
@@ -7,7 +7,7 @@ db.csv_to_db()
 
 app = Flask(__name__)
 # Allow access to endpoints from any IP address
-CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/api/pokemon', methods=['GET'])
 def api_get_all_pokemon():
@@ -37,4 +37,4 @@ def api_delete_pokemon(pokedex_no):
 if __name__ == "__main__":
     #app.debug = True
     #app.run(debug=True)
-    app.run() # run Flask app
+    app.run(host='0.0.0.0') # run Flask app
