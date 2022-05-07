@@ -43,9 +43,10 @@ As currently implemented, getting this program to work on UVM's Silk server is a
    3. wsgi.py
 3. For each route (URL) that you wish to set up, you need to create a route in my_api.py. Contained within this repository is an example using Pokemon data.
 4. Once you have your routes set up, edit `www-root/.silk.ini` with each route. Again, an example of my `.silk.ini` for this Pokemon example can be found within this repository.
-5. Once you have your routes added to `.silk.ini`, run the following command from `www-root` on Silk: `silk site <url> update`. For <url>, simply insert the URL you wish to use. I just used `<netid>.w3.uvm.edu`.
-6. Finally, run `silk app <url>/<path> load # for uri = /<path>` ***FOR EACH*** path you set up. You cannot run this command only once, or you will get 404 errors.
-7. You are all set—your site should work as designed. Please note that, in my example, the POST and PUT requests require data to be supplied in JSON form in the request body. [Postman](https://www.postman.com/) is an excellent tool for this.
+5. Once you have your routes added to `.silk.ini`, run the following command from `www-root` on Silk: `silk site <url> update`. For `<url>`, simply insert the URL you wish to use. I just used `<netid>.w3.uvm.edu`.
+6. Run `silk app <url>/<path> load # for uri = /<path>` ***FOR EACH*** path you set up. You cannot run this command only once, or you will get 404 errors.
+7. I have supplied another file, called `db.py`, which contains some functions to help you get started. *Please note that you will need to modify much of the code and SQL statement to work with your own data. I have noted this throughout the file.* Descriptions of the functions may be found at the top of each.
+8. You are all set—your site should work as designed. Please note that, in my example, the POST and PUT requests require data to be supplied in JSON form in the request body. [Postman](https://www.postman.com/) is an excellent tool for this.
 
 #### Sample Pokemon object
 ```json

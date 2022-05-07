@@ -2,19 +2,21 @@
 import sqlite3
 import csv
 
-def connect_to_db():
+def connect_to_db(dbname):
     """ Establish a connection to the database file.
+    :param dbname: the name of the database file.
     :return: the connection object for the database file
     """
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(dbname)
     return conn
 
-def create_db_table():
-    """ Attempt to create the Pokemon table in the database file,
-    with error handling.
+def create_db_table(dbname):
+    """ Attempt to create an empty table in the database file, with error handling.
+    :param dbname: the name of the database file.
     """
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(dbname)
+        # NOTE: Modify this SQL statement to create a table to hold your own data!
         conn.execute('''
             CREATE TABLE pokemon (
                 pokedex_number integer PRIMARY KEY NOT NULL,
@@ -27,29 +29,30 @@ def create_db_table():
         ''')
 
         conn.commit()
-        print("Pokemon table create successfully")
+        print("Table create successfully")
     except sqlite3.Error as e:
         print("Error:", e)
-        print("Pokemon table creation failed")
+        print("Table creation failed")
         print()
     finally:
         conn.close()
 
-def csv_to_db():
-    """ Read the data from the .csv file into the database
+def csv_to_db(csvname, dbname):
+    """ Read data from a csv file into the database.
     """
     try:
-        conn = connect_to_db()
+        conn = connect_to_db(dbname)
         try:
-            with open('pokemon.csv') as pkm_csv:
+            with open(csvname) as in_csv:
                 # Create csv reader object
-                reader = csv.reader(pkm_csv)
+                reader = csv.reader(in_csv)
 
                 # Extract field row at top of csv file
                 fields = next(reader)
 
                 # Read the data from the csv file, row by row, insert into the database
                 for row in reader:
+                    # NOTE: Modify this SQL statement to insert your own rows!
                     sql = '''INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) 
                             VALUES (?, ?, ?, ?, ?, ?);
                     '''
@@ -66,8 +69,9 @@ def csv_to_db():
         conn.close()
 
 def insert_pokemon(pokemon):
-    """ Implements the 'Create' in CRUD - inserts a Pokemon into the database
-    :param pokemon: the pokemon to be inserted
+    """ Implements the 'Create' in CRUD - inserts a row into the database.
+    NOTE: Much of this code will need to be adjusted to match your own data, this is just an example!
+    :param pokemon: the Pokemon to be inserted
     :return: the Pokemon that was inserted
     """
     inserted_pokemon = {}
@@ -76,7 +80,6 @@ def insert_pokemon(pokemon):
         # Cursor object is used to execute CRUD operations
         cur = conn.cursor()
         # SQL 'INSERT INTO' statement inserts new records into a database
-        # See the README for an example of what the parameter 'pokemon' should be formatted as
         cur.execute("INSERT INTO pokemon (pokedex_number, name, type1, type2, generation, abilities) \
                         VALUES (?, ?, ?, ?, ?, ?)", (pokemon['pokedex_number'], pokemon['name'], pokemon['type1'],
                         pokemon['type2'], pokemon['generation'], pokemon['abilities']))
@@ -96,6 +99,7 @@ def insert_pokemon(pokemon):
         
 def get_all_pokemon():
     """ Partially implements the 'Retrieve' in CRUD - retrieves ALL Pokemon from the database
+    NOTE: Much of this code will need to be adjusted to match your own data, this is just an example!
     :return: all the Pokemon in the database
     """
     all_pokemon = []
@@ -130,6 +134,7 @@ def get_all_pokemon():
 
 def get_pokemon_by_dex(pokedex_no):
     """ Partially implements the 'Retrieve' in CRUD - retrieves a single Pokemon from the database by Pokedex no.
+    NOTE: Much of this code will need to be adjusted to match your own data, this is just an example!
     :param pokedex_no: the Pokedex no. of the Pokemon to be retrieved
     :return: the specified Pokemon's database entry
     """
@@ -161,6 +166,7 @@ def get_pokemon_by_dex(pokedex_no):
 
 def update_pokemon(pokemon):
     """ Implements the 'Update' in CRUD - updates a single Pokemon in the database
+    NOTE: Much of this code will need to be adjusted to match your own data, this is just an example!
     :param pokemon: the Pokemon to be updated (identified by Pokedex no.)
     :return: the Pokemon that was updated
     """
@@ -189,13 +195,14 @@ def update_pokemon(pokemon):
 
 def delete_pokemon(pokedex_no):
     """ Implements the 'Delete' in CRUD - deletes a single Pokemon in the database
+    NOTE: Much of this code will need to be adjusted to match your own data, this is just an example!
     :param pokedex_no: the Pokedex no. of the Pokemon to be delete
     :return: a success/failure message
     """
     message = {}
     try:
         conn = connect_to_db()
-        # SQL DELETE statement along with WHERE to delete a Pokemon with a certain Pokedex no. from the database
+        # SQL DELETE statement along with WHERE to delete a Pokemon with a certain Pokedex no. from the database'
         conn.execute("DELETE from pokemon WHERE pokedex_number = ?", (pokedex_no,))
         conn.commit()
         message['status'] = "Pokemon deleted successfully"
