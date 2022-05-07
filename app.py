@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
-def home():
+def index():
     return """Welcome to the Pokemon REST API. Here are the utilities available to you:<br>
     \t* /api/pokemon: Return all Pokemon using a GET request<br>
     \t* /api/pokemon/<pokedex_no>: Return a single Pokemon using a GET request (via Pokedex number)<br>
@@ -26,7 +26,7 @@ def api_get_all_pokemon():
     # We use jsonify so that we are returning JSON objects rather than Python dictionaries
     return jsonify(db.get_all_pokemon())
 
-@app.route('/api/pokemon/<pokedex_no>', methods=['GET'])
+@app.route('/api/pokemon/<int:pokedex_no>', methods=['GET'])
 def api_get_pokemon_by_dex(pokedex_no):
     return jsonify(db.get_pokemon_by_dex(pokedex_no))
 
@@ -42,7 +42,7 @@ def api_update_pokemon():
     result = db.update_pokemon(pokemon)
     return jsonify(result)
 
-@app.route('/api/pokemon/delete/<pokedex_no>', methods=['DELETE'])
+@app.route('/api/pokemon/delete/<int:pokedex_no>', methods=['DELETE'])
 def api_delete_pokemon(pokedex_no):
     return jsonify(db.delete_pokemon(pokedex_no))
 
